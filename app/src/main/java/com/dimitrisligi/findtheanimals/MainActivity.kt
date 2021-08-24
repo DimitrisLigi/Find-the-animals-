@@ -1,16 +1,23 @@
 package com.dimitrisligi.findtheanimals
 
 import adapters.MemoryBoardAdapter
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.SyncStateContract
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import gameinterfaces.ClickCardListener
 import models.BoardSize
+import models.GameManager
+import models.MemoryCard
 import utils.Constants
 
 class MainActivity : AppCompatActivity() {
+
+
 
     /**
      * Declaring as lateinit vars the views
@@ -19,17 +26,29 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tvNumberOfMoves: TextView
     private lateinit var tvNumberOfPairs: TextView
 
-    private var boardSize: BoardSize = BoardSize.HARD
 
+    //GAME MANAGER
+    private lateinit var gameManager: GameManager
+
+    //ADAPTER
+    private lateinit var mAdapter: MemoryBoardAdapter
+
+    //We create a board size equal to the level of hardness.
+    private var boardSize: BoardSize = BoardSize.EASY
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        initViews()
-        initRecycler()
-    }
 
+        //Initializing the views
+        initViews()
+
+        //Initializing the recycler
+        initRecycler()
+
+
+    }
 
     private fun initViews(){
         //Initializing the views
@@ -38,27 +57,44 @@ class MainActivity : AppCompatActivity() {
         tvNumberOfPairs = findViewById(R.id.tv_show_pairs)
     }
 
-
-
     private fun initRecycler(){
 
-        /**
-         * We want to take only a specific amount of card pairs according to the total amount board size.
-         * e.g. If we have 12 cards to display, then we will take 6 pairs.
-         */
-        val chosenImages = Constants.DEFAULT_ICONS.shuffled().take(boardSize.getPairs())
-
-        //We make a list that we are doubling the amount of the chosen images and the we shuffled them.
-        val randomizedImages = (chosenImages + chosenImages).shuffled()
-
+        //Initializing gameManager
+        gameManager = GameManager(boardSize)
 
         //initializing gameBoard adapter
-        rvBoard.adapter = MemoryBoardAdapter(this,boardSize, randomizedImages)
+        mAdapter = MemoryBoardAdapter(this, boardSize, gameManager.cards,object :
+            ClickCardListener{
+            override fun onCardClicked(position: Int) {
+                updateCardAfterClick(position)
+            }
+        })
+
+        rvBoard.adapter= mAdapter
 
         //making rvBoard FIXED SIZE to improve our performance
         rvBoard.setHasFixedSize(true)
 
         //making the recyclerView grid
         rvBoard.layoutManager = GridLayoutManager(this, boardSize.getWidth())
+    }
+
+    @SuppressLint("NotifyDataSetChanged", "SetTextI18n")
+    private fun updateCardAfterClick(position: Int) {
+        //Case we have won the game
+        if(gameManager.haveWonTheGame()){
+            return
+        }
+        //Case we already have a face up card
+        if (gameManager.isCardFaceUp(position)){
+            return
+        }
+        //Else flip the card and notify adapter
+        if(gameManager.flipCard(position)){
+
+            tvNumberOfPairs.text = "Pairs: ${gameManager.numPairsFound} / ${boardSize.getPairs()}"
+        }
+        tvNumberOfMoves.text = "Moves: ${gameManager.getTotalMoves()}"
+        mAdapter.notifyDataSetChanged()
     }
 }

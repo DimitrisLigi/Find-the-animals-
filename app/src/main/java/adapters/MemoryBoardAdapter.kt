@@ -7,18 +7,25 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.dimitrisligi.findtheanimals.R
+import gameinterfaces.ClickCardListener
 import models.BoardSize
+import models.MemoryCard
 import kotlin.math.min
 
 class MemoryBoardAdapter(private val context: Context,
-                         private val boardSize: BoardSize, private val randomizedImages: List<Int>) :
+                         private val boardSize: BoardSize,
+                         private val card: List<MemoryCard>,
+                         private val clickCardListener: ClickCardListener) :
     RecyclerView.Adapter<MemoryBoardAdapter.ViewHolder>(){
 
+    private var totalMoves: Int = 0
 
     companion object{
-        private const val MARGIN_SIZE = 20
+        private const val MARGIN_SIZE = 10
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -29,9 +36,8 @@ class MemoryBoardAdapter(private val context: Context,
         val cardSideLength = min(cardWidth,cardHeight)
 
         val v = LayoutInflater.from(context).inflate(R.layout.memory_card, parent,false)
-
-
         val layoutParams = v.findViewById<CardView>(R.id.cv_memory_card).layoutParams as ViewGroup.MarginLayoutParams
+
         layoutParams.width = cardSideLength
         layoutParams.height = cardSideLength
         layoutParams.setMargins(MARGIN_SIZE, MARGIN_SIZE, MARGIN_SIZE, MARGIN_SIZE)
@@ -47,12 +53,35 @@ class MemoryBoardAdapter(private val context: Context,
     override fun getItemCount(): Int = boardSize.numCads
 
 
+
     inner class ViewHolder(view: View): RecyclerView.ViewHolder(view){
 
+        //Declaring variables
         private val imageButton: ImageButton = view.findViewById(R.id.imageButton)
 
+
         fun bind(position: Int){
-            imageButton.setImageResource(randomizedImages[position])
+
+            val memoryCard = card[position]
+
+            imageButton
+                .setImageResource(
+                    if
+                            (memoryCard.faceUp) memoryCard.identifier
+                    else
+                            R.drawable.ic_launcher_background)
+
+            imageButton.alpha = if (memoryCard.isMatched) .4f else 1.0f
+
+            //Making the imageButton grey if it is matched
+            val colorStateList = if (memoryCard.isMatched) ContextCompat
+                .getColorStateList(context,R.color.color_grey) else null
+
+            ViewCompat.setBackgroundTintList(imageButton,colorStateList)
+
+            imageButton.setOnClickListener {
+                clickCardListener.onCardClicked(position)
+            }
         }
     }
 }

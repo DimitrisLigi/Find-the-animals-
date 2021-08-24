@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center">
+    android:gravity="center"
+    android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_memory_card"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
         app:cardCornerRadius="8dp"
         app:cardElevation="8dp">
 
@@ -18,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"
-            android:scaleType="center"
+            android:scaleType="centerCrop"
             app:srcCompat="@drawable/ic_launcher_background"
             tools:ignore="SpeakableTextPresentCheck" />
     </androidx.cardview.widget.CardView>

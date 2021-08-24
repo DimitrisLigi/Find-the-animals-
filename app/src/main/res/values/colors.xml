@@ -14,5 +14,6 @@
     <color name="forbidden_color_3">#98c799</color>
     <color name="forbidden_color_4">#c7dd84</color>
     <color name="forbidden_color_5">#f7f36f</color>
+    <color name="color_grey">#4D4D4D</color>
 
 </resources>
