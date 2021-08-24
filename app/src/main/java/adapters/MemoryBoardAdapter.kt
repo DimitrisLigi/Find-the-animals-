@@ -12,7 +12,8 @@ import com.dimitrisligi.findtheanimals.R
 import models.BoardSize
 import kotlin.math.min
 
-class MemoryBoardAdapter(private val context: Context, private val boardSize: BoardSize) :
+class MemoryBoardAdapter(private val context: Context,
+                         private val boardSize: BoardSize, private val randomizedImages: List<Int>) :
     RecyclerView.Adapter<MemoryBoardAdapter.ViewHolder>(){
 
 
@@ -51,10 +52,7 @@ class MemoryBoardAdapter(private val context: Context, private val boardSize: Bo
         private val imageButton: ImageButton = view.findViewById(R.id.imageButton)
 
         fun bind(position: Int){
-            imageButton.setOnClickListener {
-                Toast.makeText(this@MemoryBoardAdapter.context,
-                    "I am at position $position",Toast.LENGTH_SHORT).show()
-            }
+            imageButton.setImageResource(randomizedImages[position])
         }
     }
 }
