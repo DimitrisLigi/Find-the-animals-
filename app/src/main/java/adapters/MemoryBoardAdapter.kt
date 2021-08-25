@@ -22,17 +22,17 @@ class MemoryBoardAdapter(private val context: Context,
                          private val clickCardListener: ClickCardListener) :
     RecyclerView.Adapter<MemoryBoardAdapter.ViewHolder>(){
 
-    private var totalMoves: Int = 0
-
     companion object{
-        private const val MARGIN_SIZE = 10
+        private const val MARGIN_SIZE =50
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         //Figuring out the size of the adapter
         val cardWidth = parent.width / boardSize.getWidth() - ( 2 * MARGIN_SIZE )
-        val cardHeight = parent.height / boardSize.getHeight() - ( 2 * MARGIN_SIZE )
+        val cardHeight = parent.height / boardSize.getHeight()- ( 2 * MARGIN_SIZE )
+
+        //Taking the minimum length side.
         val cardSideLength = min(cardWidth,cardHeight)
 
         val v = LayoutInflater.from(context).inflate(R.layout.memory_card, parent,false)
@@ -41,7 +41,6 @@ class MemoryBoardAdapter(private val context: Context,
         layoutParams.width = cardSideLength
         layoutParams.height = cardSideLength
         layoutParams.setMargins(MARGIN_SIZE, MARGIN_SIZE, MARGIN_SIZE, MARGIN_SIZE)
-
 
         return ViewHolder(v)
     }
@@ -53,7 +52,6 @@ class MemoryBoardAdapter(private val context: Context,
     override fun getItemCount(): Int = boardSize.numCads
 
 
-
     inner class ViewHolder(view: View): RecyclerView.ViewHolder(view){
 
         //Declaring variables
@@ -62,8 +60,13 @@ class MemoryBoardAdapter(private val context: Context,
 
         fun bind(position: Int){
 
+            //Making an instance of a memory card
             val memoryCard = card[position]
 
+            /**
+             * If our card is face up then we draw our identifier.
+             * If out card is face down then we draw the default background icon
+             */
             imageButton
                 .setImageResource(
                     if
@@ -71,6 +74,7 @@ class MemoryBoardAdapter(private val context: Context,
                     else
                             R.drawable.ic_launcher_background)
 
+            //Decreasing the alpha if you have a match
             imageButton.alpha = if (memoryCard.isMatched) .4f else 1.0f
 
             //Making the imageButton grey if it is matched

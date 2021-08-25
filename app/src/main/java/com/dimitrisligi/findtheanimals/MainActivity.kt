@@ -4,16 +4,12 @@ import adapters.MemoryBoardAdapter
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.SyncStateContract
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import gameinterfaces.ClickCardListener
 import models.BoardSize
 import models.GameManager
-import models.MemoryCard
-import utils.Constants
 
 class MainActivity : AppCompatActivity() {
 
@@ -46,7 +42,6 @@ class MainActivity : AppCompatActivity() {
 
         //Initializing the recycler
         initRecycler()
-
 
     }
 
@@ -91,7 +86,6 @@ class MainActivity : AppCompatActivity() {
         }
         //Else flip the card and notify adapter
         if(gameManager.flipCard(position)){
-
             tvNumberOfPairs.text = "Pairs: ${gameManager.numPairsFound} / ${boardSize.getPairs()}"
         }
         tvNumberOfMoves.text = "Moves: ${gameManager.getTotalMoves()}"
