@@ -1,10 +1,14 @@
 package com.dimitrisligi.findtheanimals
 
 import adapters.MemoryBoardAdapter
+import android.animation.ArgbEvaluator
 import android.annotation.SuppressLint
+import android.graphics.Interpolator
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import gameinterfaces.ClickCardListener
@@ -50,6 +54,8 @@ class MainActivity : AppCompatActivity() {
         rvBoard = findViewById(R.id.rv_board)
         tvNumberOfMoves = findViewById(R.id.tv_show_moves)
         tvNumberOfPairs = findViewById(R.id.tv_show_pairs)
+
+        tvNumberOfPairs.setTextColor(ContextCompat.getColor(this,R.color.color_min_progress))
     }
 
     private fun initRecycler(){
@@ -84,9 +90,18 @@ class MainActivity : AppCompatActivity() {
         if (gameManager.isCardFaceUp(position)){
             return
         }
-        //Else flip the card and notify adapter
+        //Flipping the card
         if(gameManager.flipCard(position)){
+            val color = ArgbEvaluator().evaluate(
+                gameManager.numPairsFound.toFloat() / boardSize.getPairs(),
+                ContextCompat.getColor(this,R.color.color_min_progress),
+                ContextCompat.getColor(this,R.color.color_max_progress)) as Int
+            tvNumberOfPairs.setTextColor(color)
+            //Update the number of pairs in the UI
             tvNumberOfPairs.text = "Pairs: ${gameManager.numPairsFound} / ${boardSize.getPairs()}"
+            if (gameManager.haveWonTheGame()){
+                Toast.makeText(this,"You Won!!!",Toast.LENGTH_LONG).show()
+            }
         }
         tvNumberOfMoves.text = "Moves: ${gameManager.getTotalMoves()}"
         mAdapter.notifyDataSetChanged()

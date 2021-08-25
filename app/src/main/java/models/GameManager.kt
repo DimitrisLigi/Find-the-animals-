@@ -1,5 +1,8 @@
 package models
 
+import android.content.Context
+import android.widget.Toast
+import gameinterfaces.NotifyGameStatusInter
 import utils.Constants
 
 class GameManager (private val boardSize: BoardSize){
@@ -39,14 +42,6 @@ class GameManager (private val boardSize: BoardSize){
         }
     }
 
-    private fun restoreCards() {
-        cards.forEach {
-            //If the card isn't matched then we flip it
-            if (!it.isMatched) it.faceUp = false
-        }
-    }
-
-
     fun flipCard(position: Int): Boolean{
         numMoves++
         val card =  cards[position]
@@ -71,6 +66,13 @@ class GameManager (private val boardSize: BoardSize){
         card.faceUp = !card.faceUp
 
         return foundMatch
+    }
+
+    private fun restoreCards() {
+        cards.forEach {
+            //If the card isn't matched then we flip it
+            if (!it.isMatched) it.faceUp = false
+        }
     }
 
     fun haveWonTheGame(): Boolean = numPairsFound == boardSize.getPairs()

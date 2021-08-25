@@ -15,5 +15,7 @@
     <color name="forbidden_color_4">#c7dd84</color>
     <color name="forbidden_color_5">#f7f36f</color>
     <color name="color_grey">#4D4D4D</color>
+    <color name="color_min_progress">#FF1100</color>
+    <color name="color_max_progress">#01F822</color>
 
 </resources>
