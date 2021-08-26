@@ -6,6 +6,8 @@ import android.annotation.SuppressLint
 import android.graphics.Interpolator
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -47,6 +49,21 @@ class MainActivity : AppCompatActivity() {
         //Initializing the recycler
         initRecycler()
 
+    }
+
+    //Inflating the menu bar
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main,menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.mi_refresh ->{
+                initRecycler()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun initViews(){
@@ -92,13 +109,19 @@ class MainActivity : AppCompatActivity() {
         }
         //Flipping the card
         if(gameManager.flipCard(position)){
+            //Creating a interpolated color
             val color = ArgbEvaluator().evaluate(
                 gameManager.numPairsFound.toFloat() / boardSize.getPairs(),
                 ContextCompat.getColor(this,R.color.color_min_progress),
                 ContextCompat.getColor(this,R.color.color_max_progress)) as Int
+
+            //Setting the color based the progress
             tvNumberOfPairs.setTextColor(color)
+
             //Update the number of pairs in the UI
             tvNumberOfPairs.text = "Pairs: ${gameManager.numPairsFound} / ${boardSize.getPairs()}"
+
+            //Notify the user if won the game
             if (gameManager.haveWonTheGame()){
                 Toast.makeText(this,"You Won!!!",Toast.LENGTH_LONG).show()
             }
@@ -106,4 +129,7 @@ class MainActivity : AppCompatActivity() {
         tvNumberOfMoves.text = "Moves: ${gameManager.getTotalMoves()}"
         mAdapter.notifyDataSetChanged()
     }
+
+
+
 }
