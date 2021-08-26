@@ -4,12 +4,15 @@ import adapters.MemoryBoardAdapter
 import android.animation.ArgbEvaluator
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.Intent
 import android.graphics.Interpolator
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -18,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView
 import gameinterfaces.ClickCardListener
 import models.BoardSize
 import models.GameManager
+import utils.Constants
 
 class MainActivity : AppCompatActivity() {
 
@@ -36,7 +40,6 @@ class MainActivity : AppCompatActivity() {
 
     //We create a board size equal to the level of hardness.
     private var boardSize: BoardSize = BoardSize.HARD
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,20 +63,68 @@ class MainActivity : AppCompatActivity() {
     //Logic on items menu
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
+            //Refresh button
             R.id.mi_refresh ->{
                 if(gameManager.getTotalMoves() > 0 && !gameManager.haveWonTheGame()) {
                     showAlertDialog("Do you want to restart?", null) { initRecycler() }
                 }else return false
             }
+            //Change board size button
+            R.id.mi_change_board_size -> {
+                showNewSizeDialog()
+                return true
+            }
+            R.id.mi_create_custom_game -> {
+                showCreationDialog()
+                return true
+            }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun showCreationDialog() {
+        //We let user first know what kind of difficulty first wants to create a custom game.
+        //Creating the dialog board size view
+        val boardSizeView = LayoutInflater.from(this).inflate(R.layout.dialog_board_size,null)
+        val radioGroupButton = boardSizeView.findViewById<RadioGroup>(R.id.rg_change_difficulty)
+
+        showAlertDialog("Choose difficulty for your custom game",boardSizeView) {
+            val desiredBoardSize = when (radioGroupButton.checkedRadioButtonId) {
+                R.id.rb_easy -> BoardSize.EASY
+                R.id.rb_medium -> BoardSize.MEDIUM
+                else -> BoardSize.HARD
+            }
+           val intent = Intent(this,CreateCustomGameActivity::class.java)
+            intent.putExtra(Constants.EXTRA_BOARD_SIZE,desiredBoardSize)
+            startActivityForResult(intent,Constants.CREATE_REQUEST_CODE)
+        }
+    }
+
+    private fun showNewSizeDialog() {
+        //Creating the dialog board size view
+        val boardSizeView = LayoutInflater.from(this).inflate(R.layout.dialog_board_size,null)
+        val radioGroupButton = boardSizeView.findViewById<RadioGroup>(R.id.rg_change_difficulty)
+
+        when(boardSize){
+            BoardSize.EASY -> radioGroupButton.check(R.id.rb_easy)
+            BoardSize.MEDIUM -> radioGroupButton.check(R.id.rb_medium)
+            BoardSize.HARD -> radioGroupButton.check(R.id.rb_hard)
+        }
+
+        showAlertDialog("Choose difficulty",boardSizeView) {
+            boardSize = when (radioGroupButton.checkedRadioButtonId) {
+                R.id.rb_easy -> BoardSize.EASY
+                R.id.rb_medium -> BoardSize.MEDIUM
+                else -> BoardSize.HARD
+            }
+            initRecycler()
+        }
     }
 
     private fun showAlertDialog(title:String, view: View?, positiveClickListener: View.OnClickListener) {
         AlertDialog.Builder(this)
             .setTitle(title)
             .setView(view)
-            .setIcon(R.drawable.ic_refresh)
             .setNegativeButton("Cancel",null)
             .setPositiveButton("Ok"){
                 _,_-> positiveClickListener.onClick(null)

@@ -18,4 +18,6 @@ object Constants {
         R.drawable.ic_star,
         R.drawable.ic_work,
     )
+    val CREATE_REQUEST_CODE = 245
+    val EXTRA_BOARD_SIZE = "EXTRA_BOARD_SIZE"
 }

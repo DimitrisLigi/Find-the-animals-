@@ -7,4 +7,12 @@
         android:icon="@drawable/ic_refresh"
         android:title="Item"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/mi_change_board_size"
+        android:title="@string/change_difficulty"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/mi_create_custom_game"
+        android:title="Create custom game"
+        app:showAsAction="never" />
 </menu>
