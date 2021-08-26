@@ -32,13 +32,13 @@ class GameManager (private val boardSize: BoardSize){
 
 
     private fun checkForMatch(position1: Int, position2: Int): Boolean {
-        if (cards[position1].identifier != cards[position2].identifier){
-            return false
+        return if (cards[position1].identifier != cards[position2].identifier){
+            false
         }else{
             cards[position1].isMatched = true
             cards[position2].isMatched = true
             numPairsFound++
-            return true
+            true
         }
     }
 
@@ -48,7 +48,7 @@ class GameManager (private val boardSize: BoardSize){
         var foundMatch = false
 
         /**
-         * We have 3 cased when we flip the card
+         * We have 3 cased when we flip the card...Case 0 and 2 are actually the same
          *
          * 0 cards previously flipped ->  restore all cards + flip over the card
          * 1 card previously flipped  ->  flip over the card and check if there is a match

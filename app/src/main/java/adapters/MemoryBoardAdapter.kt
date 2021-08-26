@@ -23,7 +23,7 @@ class MemoryBoardAdapter(private val context: Context,
     RecyclerView.Adapter<MemoryBoardAdapter.ViewHolder>(){
 
     companion object{
-        private const val MARGIN_SIZE =50
+        private const val MARGIN_SIZE =20
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
