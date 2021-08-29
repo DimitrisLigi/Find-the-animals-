@@ -1,6 +1,7 @@
 package com.dimitrisligi.findtheanimals
 
 import adapters.PicPickerAdapter
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ContentValues.TAG
 import android.content.Intent
@@ -24,6 +25,9 @@ import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import gameinterfaces.ChoosePhotoImageClickListener
 import models.BoardSize
 import utils.BitmapScaler
@@ -42,6 +46,8 @@ class CreateCustomGameActivity : AppCompatActivity() {
 
     private val chosenImagesURIs = mutableListOf<Uri>()
     private var numImagesRequired = -1
+    private val storage = Firebase.storage
+    private val db = Firebase.firestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -107,6 +113,7 @@ class CreateCustomGameActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -181,11 +188,46 @@ class CreateCustomGameActivity : AppCompatActivity() {
     }
 
     private fun saveDataToFireBase() {
+        val customGameName = etGameName.text.toString()
+        var didWeEncounterWithError = false
+        val uploadedImagesUrl = mutableListOf<String>()
         Log.i(Constants.TAG,"Saving data to firebase!")
 
         for((index,photoUri) in chosenImagesURIs.withIndex()){
             val imageByteArray = getImageArray(photoUri)
+            /**Creating a model of the filepath. How our url should look like
+             *eg.images/catGame/currentMills-index.gpg
+             * */
+
+            val filePath = "images/$customGameName/${System.currentTimeMillis()}-${index}.jpg"
+            val photoReferenceFilePath = storage.reference.child(filePath)
+            //This line below is expensive
+            photoReferenceFilePath.putBytes(imageByteArray).continueWithTask {
+                photoUploadTask -> Log.i(Constants.TAG,"Uploaded bytes: ${photoUploadTask.result?.bytesTransferred}")
+                photoReferenceFilePath.downloadUrl
+            }.addOnCompleteListener {
+                    downloadUrlTask -> if(!downloadUrlTask.isSuccessful){
+                        Log.i(Constants.TAG,"Exeption with Firebase storage", downloadUrlTask.exception)
+                        Toast.makeText(this,"Failed to upload images",Toast.LENGTH_LONG).show()
+                        didWeEncounterWithError = true
+                        return@addOnCompleteListener
+                        }
+                        if(didWeEncounterWithError){
+                            return@addOnCompleteListener
+                        }
+                val downLoadUrl = downloadUrlTask.result.toString()
+                uploadedImagesUrl.add(downLoadUrl)
+                Log.i(Constants.TAG,"Finished uploading $photoUri, uploaded ${uploadedImagesUrl.size} photos")
+                Toast.makeText(this,"Finished uploading the images",Toast.LENGTH_LONG).show()
+                if (uploadedImagesUrl.size == chosenImagesURIs.size){
+                    handleAllSuccessUploadedImages(customGameName,uploadedImagesUrl)
+                }
+            }
         }
+    }
+
+    private fun handleAllSuccessUploadedImages(gameName: String, imagesUrl: MutableList<String>) {
+            //TODO: SOMETHING
     }
 
     /**
