@@ -5,7 +5,6 @@ enum class BoardSize (val numCads: Int){
     MEDIUM(18),
     HARD(24);
 
-
     fun getWidth(): Int{
         return when(this){
             EASY -> 2

@@ -138,8 +138,6 @@ class MainActivity : AppCompatActivity() {
         tvNumberOfMoves = findViewById(R.id.tv_show_moves)
         tvNumberOfPairs = findViewById(R.id.tv_show_pairs)
 
-
-
     }
 
     private fun initRecycler(){
