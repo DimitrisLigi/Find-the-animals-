@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1026115470926",
+    "project_id": "memory-card-game-7f0c9",
+    "storage_bucket": "memory-card-game-7f0c9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1026115470926:android:15c565d377eb4b8ffb651f",
+        "android_client_info": {
+          "package_name": "com.dimitrisligi.findtheanimals"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1026115470926-kc149cpsg59v8234pmvuraeecnjgbaae.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsSImthB28XwwOvuQy2BlVFme1yWj8G70"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1026115470926-kc149cpsg59v8234pmvuraeecnjgbaae.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
