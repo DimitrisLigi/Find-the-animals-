@@ -4,6 +4,8 @@ import android.graphics.Bitmap
 
 object BitmapScaler {
 
+
+
     /**
      * Scale and maintain aspect ratio given a desired width
      */

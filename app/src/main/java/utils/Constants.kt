@@ -4,7 +4,6 @@ import android.graphics.drawable.Icon
 import com.dimitrisligi.findtheanimals.R
 
 object Constants {
-    const val TAG = "TAG"
 
     val DEFAULT_ICONS = listOf(
         R.drawable.ic_face,
@@ -21,6 +20,10 @@ object Constants {
         R.drawable.ic_work,
     )
 
+    const val TAG = "TAG"
+
+    const val EXTRA_GAME_NAME = "EXTRA_GAME_NAME"
+
     const val CREATE_REQUEST_CODE = 245
 
     const val PICK_PHOTO_CODE = 183
@@ -34,4 +37,8 @@ object Constants {
     const val MIN_GAME_NAME_LENGTH = 3
 
     const val MAX_GAME_NAME_LENGTH = 14
+
+    const val SCALING_HEIGHT = 250
+
+    const val SCALING_QUALITY = 60
 }

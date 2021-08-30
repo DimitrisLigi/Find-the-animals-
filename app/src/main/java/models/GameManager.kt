@@ -1,11 +1,8 @@
 package models
 
-import android.content.Context
-import android.widget.Toast
-import gameinterfaces.NotifyGameStatusInter
 import utils.Constants
 
-class GameManager (private val boardSize: BoardSize){
+class GameManager(private val boardSize: BoardSize, private val customImages: List<String>?){
     val cards: List<MemoryCard>
     var numPairsFound: Int = 0
 
@@ -19,13 +16,22 @@ class GameManager (private val boardSize: BoardSize){
          * and we take first icons equal to the  pair size.
          * e.g. If we have 12 cards to display, then we will take 6 pairs.
          */
-        val chosenImages = Constants.DEFAULT_ICONS.shuffled().take(boardSize.getPairs())
 
-        //We make a list that we are doubling the amount of the chosen images and the we shuffled them.
-        val randomizedImages = (chosenImages + chosenImages).shuffled()
+        if (customImages == null){
+            val chosenImages = Constants.DEFAULT_ICONS.shuffled().take(boardSize.getPairs())
 
-        //Mapping the images with the memory cards.
-        cards = randomizedImages.map { MemoryCard(it) }
+            //We make a list that we are doubling the amount of the chosen images and the we shuffled them.
+            val randomizedImages = (chosenImages + chosenImages).shuffled()
+
+            //Mapping the images with the memory cards.
+            cards = randomizedImages.map { MemoryCard(it) }
+
+        }else{
+            val randomizedImages = (customImages + customImages).shuffled()
+
+            //With hashcode we turn a string and making it an "almost" unique int
+            cards = randomizedImages.map{ MemoryCard(it.hashCode(),it)}
+        }
 
     }
 
