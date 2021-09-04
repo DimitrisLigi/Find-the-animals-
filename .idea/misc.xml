@@ -5,13 +5,20 @@
       <map>
         <entry key="..\:/Users/Dimitris/AndroidStudioProjects/Findtheanimals/app/src/main/res/drawable/ic_baseline_local_florist_24.xml" value="0.22708333333333333" />
         <entry key="..\:/Users/Dimitris/AndroidStudioProjects/Findtheanimals/app/src/main/res/drawable/ic_face.xml" value="0.22708333333333333" />
+        <entry key="..\:/Users/Dimitris/AndroidStudioProjects/Findtheanimals/app/src/main/res/drawable/ic_flower.xml" value="0.22708333333333333" />
         <entry key="..\:/Users/Dimitris/AndroidStudioProjects/Findtheanimals/app/src/main/res/drawable/ic_gift.xml" value="0.22708333333333333" />
         <entry key="..\:/Users/Dimitris/AndroidStudioProjects/Findtheanimals/app/src/main/res/drawable/ic_heart.xml" value="0.22708333333333333" />
         <entry key="..\:/Users/Dimitris/AndroidStudioProjects/Findtheanimals/app/src/main/res/drawable/ic_home.xml" value="0.22708333333333333" />
+        <entry key="..\:/Users/Dimitris/AndroidStudioProjects/Findtheanimals/app/src/main/res/drawable/ic_launcher_background.xml" value="0.22708333333333333" />
+        <entry key="..\:/Users/Dimitris/AndroidStudioProjects/Findtheanimals/app/src/main/res/drawable/ic_loading_image.xml" value="0.22708333333333333" />
+        <entry key="..\:/Users/Dimitris/AndroidStudioProjects/Findtheanimals/app/src/main/res/drawable/ic_plane.xml" value="0.22708333333333333" />
         <entry key="..\:/Users/Dimitris/AndroidStudioProjects/Findtheanimals/app/src/main/res/drawable/ic_refresh.xml" value="0.39114583333333336" />
+        <entry key="..\:/Users/Dimitris/AndroidStudioProjects/Findtheanimals/app/src/main/res/drawable/ic_search_black_24dp.xml" value="0.22708333333333333" />
         <entry key="..\:/Users/Dimitris/AndroidStudioProjects/Findtheanimals/app/src/main/res/layout/activity_create_custom_game.xml" value="0.375" />
         <entry key="..\:/Users/Dimitris/AndroidStudioProjects/Findtheanimals/app/src/main/res/layout/activity_main.xml" value="0.37395833333333334" />
+        <entry key="..\:/Users/Dimitris/AndroidStudioProjects/Findtheanimals/app/src/main/res/layout/activity_starting_game.xml" value="0.375" />
         <entry key="..\:/Users/Dimitris/AndroidStudioProjects/Findtheanimals/app/src/main/res/layout/dialog_board_size.xml" value="0.375" />
+        <entry key="..\:/Users/Dimitris/AndroidStudioProjects/Findtheanimals/app/src/main/res/layout/dialog_download_board.xml" value="0.375" />
         <entry key="..\:/Users/Dimitris/AndroidStudioProjects/Findtheanimals/app/src/main/res/layout/image_card_picker.xml" value="0.375" />
         <entry key="..\:/Users/Dimitris/AndroidStudioProjects/Findtheanimals/app/src/main/res/layout/memory_card.xml" value="0.375" />
         <entry key="..\:/Users/Dimitris/AndroidStudioProjects/Findtheanimals/app/src/main/res/layout/recycler_view_item.xml" value="0.2109375" />

@@ -6,12 +6,14 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.EditText
 import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
@@ -20,9 +22,11 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.github.jinatonic.confetti.CommonConfetti
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.squareup.picasso.Picasso
 import gameinterfaces.ClickCardListener
 import models.BoardSize
 import models.GameManager
@@ -38,7 +42,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tvNumberOfMoves: TextView
     private lateinit var tvNumberOfPairs: TextView
     private lateinit var clRoot: ConstraintLayout
-
+    private lateinit var boardSize: BoardSize
     //GAME MANAGER
     private lateinit var gameManager: GameManager
 
@@ -46,20 +50,24 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mAdapter: MemoryBoardAdapter
 
     //We create a board size equal to the level of hardness.
-    private var boardSize: BoardSize = BoardSize.HARD
+//    private var boardSize: BoardSize = BoardSize.EASY
+
 
     //Firestore instance
     private val db = Firebase.firestore
 
     //The custom game we receive
-    private var gamaName: String? = null
+    private var gameName: String? = null
 
     //The custom game images
     private var customGameImages: List<String>? = null
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        boardSize = intent.getSerializableExtra(Constants.EXTRA_BOARD_SIZE) as BoardSize
 
         //Initializing the views
         initViews()
@@ -80,8 +88,10 @@ class MainActivity : AppCompatActivity() {
         when (item.itemId) {
             //Refresh button
             R.id.mi_refresh -> {
-                if (gameManager.getTotalMoves() > 0 && !gameManager.haveWonTheGame()) {
-                    showAlertDialog("Do you want to restart?", null) { initRecycler() }
+                if (gameManager.getTotalMoves() > 0) {
+                    showAlertDialog("Do you want to restart?", null) {
+                        initRecycler()
+                    }
                 } else return false
             }
             //Change board size button
@@ -91,6 +101,10 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.mi_create_custom_game -> {
                 showCreationDialog()
+                return true
+            }
+            R.id.mi_download_custom_game ->{
+                showDownloadDialog()
                 return true
             }
         }
@@ -121,8 +135,12 @@ class MainActivity : AppCompatActivity() {
             val numCards = imageList.images.size * 2
             boardSize = BoardSize.getByValue(numCards)
             customGameImages = imageList.images
+            for(imageUrl in imageList.images){
+                Picasso.get().load(imageUrl).fetch()
+            }
+            Snackbar.make(clRoot,"You are playing $customGameName",Snackbar.LENGTH_LONG).show()
+            this.gameName = customGameName
             initRecycler()
-            this.gamaName = customGameName
         }.addOnFailureListener {
             Log.e(Constants.TAG,"Exception error retrieving the game",it)
         }
@@ -166,9 +184,22 @@ class MainActivity : AppCompatActivity() {
                 R.id.rb_medium -> BoardSize.MEDIUM
                 else -> BoardSize.HARD
             }
+            gameName = null
+            customGameImages = null
             initRecycler()
         }
     }
+
+
+    private fun showDownloadDialog() {
+        val boardDownloadCustomGameView = LayoutInflater.from(this).inflate(R.layout.dialog_download_board,null)
+        showAlertDialog("Download a custom game",boardDownloadCustomGameView,View.OnClickListener {
+            val etDownloadCustomGame = boardDownloadCustomGameView.findViewById<EditText>(R.id.et_download_custom_game)
+            val gameToDownLoad = etDownloadCustomGame.text.toString().trim()
+        downLoadCustomGame(gameToDownLoad)
+        })
+    }
+
 
     private fun showAlertDialog(
         title: String,
@@ -179,6 +210,21 @@ class MainActivity : AppCompatActivity() {
             .setTitle(title)
             .setView(view)
             .setNegativeButton("Cancel", null)
+            .setPositiveButton("Ok") { _, _ ->
+                positiveClickListener.onClick(null)
+            }.show()
+    }
+
+
+    private fun showWinningAlertDialog(
+        title: String,
+        view: View?,
+        positiveClickListener: View.OnClickListener
+    ) {
+        AlertDialog.Builder(this)
+            .setTitle(title)
+            .setView(view)
+            .setNegativeButton("Cancel"){_,_ ->finish()}
             .setPositiveButton("Ok") { _, _ ->
                 positiveClickListener.onClick(null)
             }.show()
@@ -221,6 +267,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setUpTheTextViews() {
+        supportActionBar?.title = gameName ?: getString(R.string.app_name)
         when (boardSize) {
             BoardSize.EASY -> {
                 tvNumberOfMoves.text = "Easy: 4 x 2"
@@ -265,13 +312,17 @@ class MainActivity : AppCompatActivity() {
 
             //Notify the user if won the game
             if (gameManager.haveWonTheGame()) {
-                Toast.makeText(this, "You Won!!!", Toast.LENGTH_LONG).show()
+                val v = CommonConfetti.rainingConfetti(clRoot, intArrayOf(Color.BLUE,Color.GREEN,Color.RED)).oneShot()
+                showWinningAlertDialog("You have won! Do you want to restart?",null,View.OnClickListener{
+                    v.terminate()
+                    initRecycler()
+                })
+
             }
         }
-
         tvNumberOfMoves.text = "Moves: ${gameManager.getTotalMoves()}"
         mAdapter.notifyDataSetChanged()
     }
-
-
 }
+
+

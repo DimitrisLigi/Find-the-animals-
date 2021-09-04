@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="color_grey">#4D4D4D</color>
-    <color name="color_min_progress">#FF1100</color>
-    <color name="color_max_progress">#01F822</color>
+
+
+    <!-- My color palette -->
+    <color name="forbidden_color_1">#389bc2</color>
+    <color name="forbidden_color_2">#68b1ad</color>
+    <color name="forbidden_color_3">#98c799</color>
+    <color name="forbidden_color_4">#c7dd84</color>
+    <color name="forbidden_color_5">#f7f36f</color>
 </resources>

@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.dimitrisligi.findtheanimals.R
+import com.squareup.picasso.Picasso
 import gameinterfaces.ClickCardListener
 import models.BoardSize
 import models.MemoryCard
@@ -67,12 +68,17 @@ class MemoryBoardAdapter(private val context: Context,
              * If our card is face up then we draw our identifier.
              * If out card is face down then we draw the default background icon
              */
-            imageButton
-                .setImageResource(
-                    if
-                            (memoryCard.faceUp) memoryCard.identifier
-                    else
-                            R.drawable.ic_launcher_background)
+            if(memoryCard.faceUp){
+                if(memoryCard.imageUrl != null){
+                    Picasso.get().load(memoryCard.imageUrl)
+                        .placeholder(R.drawable.ic_loading_image).into(imageButton)
+                }else{
+                    imageButton.setImageResource(memoryCard.identifier)
+                }
+            }else{
+                imageButton.setImageResource(R.drawable.ic_default_back)
+            }
+
 
             //Decreasing the alpha if you have a match
             imageButton.alpha = if (memoryCard.isMatched) .4f else 1.0f

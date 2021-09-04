@@ -3,4 +3,11 @@
     <string name="change_difficulty">Change difficulty</string>
     <string name="save_game_as">Save game as:</string>
     <string name="save">Save</string>
+    <string name="enter_game_name">Enter game name</string>
+    <string name="memory_card_game">Memory Card Game</string>
+    <string name="start">Start</string>
+    <string name="choose_difficulty">Choose difficulty</string>
+    <string name="easy_4_x_2">EASY: 4 X 2</string>
+    <string name="medium_6_x_3">MEDIUM: 6 x 3</string>
+    <string name="hard_6_x_4">HARD: 6 x 4</string>
 </resources>

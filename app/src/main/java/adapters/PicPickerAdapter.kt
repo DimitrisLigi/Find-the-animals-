@@ -30,7 +30,6 @@ class PicPickerAdapter(
         layoutParams.width = imageCardLength
         layoutParams.height = imageCardLength
 
-
         return ViewHolder(v)
     }
 
