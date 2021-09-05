@@ -18,7 +18,5 @@ q
 Aapp/src/main/java/gameinterfaces/ChoosePhotoImageClickListener.kt,2\0\209d9f6c903f645bbbd8524897f56c4076790476
 i
 9app/src/main/java/gameinterfaces/NotifyGameStatusInter.kt,7\9\79cae9b71c7a9c9c031c1c26ba0f61cd56b17d3a
-U
-%app/src/main/java/models/BoardSize.kt,e\0\e01362498f3d7c463de43b65a93bcd0b0c291f10
 c
 3app/src/main/java/models/UserCustomGameImageList.kt,3\7\37b93314605001ee7e5c37fffce384d502b62347

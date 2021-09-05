@@ -29,7 +29,7 @@ class MemoryBoardAdapter(private val context: Context,
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
-        //Figuring out the size of the adapter
+        //Figuring out the size of the card
         val cardWidth = parent.width / boardSize.getWidth() - ( 2 * MARGIN_SIZE )
         val cardHeight = parent.height / boardSize.getHeight()- ( 2 * MARGIN_SIZE )
 

@@ -16,6 +16,17 @@ class StartingGame : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_starting_game)
         initViews()
+        initButtonListeners()
+    }
+
+    private fun initViews(){
+        btnStartGame = findViewById(R.id.btn_start_game)
+        btnEasy = findViewById(R.id.btn_easy)
+        btnMedium = findViewById(R.id.btn_medium)
+        btnHard = findViewById(R.id.btn_hard)
+    }
+
+    private fun initButtonListeners(){
         val intent = Intent(this,MainActivity::class.java)
 
         btnEasy.setOnClickListener {
@@ -33,13 +44,5 @@ class StartingGame : AppCompatActivity() {
         btnStartGame.setOnClickListener {
             startActivity(intent)
         }
-
-    }
-
-    private fun initViews(){
-        btnStartGame = findViewById(R.id.btn_start_game)
-        btnEasy = findViewById(R.id.btn_easy)
-        btnMedium = findViewById(R.id.btn_medium)
-        btnHard = findViewById(R.id.btn_hard)
     }
 }
